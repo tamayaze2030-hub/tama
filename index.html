@@ -148,7 +148,7 @@ button{font:inherit;cursor:pointer;border:0;border-radius:10px}
             <option>الصينية</option>
             <option>أخرى</option>
           </select>
-          <label for="sInst">المعهد المطلوب</label>
+          <label for="sInst">المعهد المطلوب <small>(اختياري)</small></label>
           <input id="sInst" placeholder="اسم المعهد">
         </div>
         <div id="uniBox" hidden>
@@ -162,7 +162,7 @@ button{font:inherit;cursor:pointer;border:0;border-radius:10px}
           </select>
           <label for="sMajor">التخصص</label>
           <input id="sMajor" placeholder="مثال: إدارة أعمال">
-          <label for="sUni">الجامعة المطلوبة</label>
+          <label for="sUni">الجامعة المطلوبة <small>(اختياري)</small></label>
           <input id="sUni" placeholder="اسم الجامعة">
         </div>
         <label for="sCountry">الدولة</label>
@@ -175,7 +175,7 @@ button{font:inherit;cursor:pointer;border:0;border-radius:10px}
           <option>ماليزيا</option>
           <option>الفلبين</option>
         </select>
-        <label for="sReqCity" id="reqCityLbl">مدينة المعهد</label>
+        <label for="sReqCity">المدينة <small>(اختياري)</small></label>
         <input id="sReqCity" placeholder="مثال: دبلن">
         <label for="sCity">مدينة سكن الطالب الحالية <small>(اختياري)</small></label>
         <input id="sCity">
@@ -215,10 +215,11 @@ function waLink(d){
     "جوال الطالب: " + d.sPhone,
     "نوع القبول: " + (d.kind === "لغة" ? "معهد لغة" : "جامعة"),
     d.kind === "لغة" ? "اللغة: " + d.sLang : "المرحلة: " + d.sDegree,
-    d.kind === "لغة" ? "المعهد: " + d.sInst : "التخصص: " + d.sMajor,
-    d.kind === "جامعة" ? "الجامعة: " + d.sUni : "",
+    d.kind === "جامعة" ? "التخصص: " + d.sMajor : "",
+    d.kind === "لغة" && d.sInst ? "المعهد: " + d.sInst : "",
+    d.kind === "جامعة" && d.sUni ? "الجامعة: " + d.sUni : "",
     "الدولة: " + d.sCountry,
-    (d.kind === "لغة" ? "مدينة المعهد: " : "مدينة الجامعة: ") + d.sReqCity,
+    d.sReqCity ? "المدينة: " + d.sReqCity : "",
     d.sCity ? "مدينة السكن: " + d.sCity : "",
     d.notes ? "ملاحظات: " + d.notes : ""
   ].filter((l,i,a)=> l!=="" || (a[i-1]!=="" )).join("\n");
@@ -238,12 +239,9 @@ $("f").addEventListener("submit", async e => {
   if (!d.rName || !d.sName) msg = "اكتب اسمك واسم الطالب.";
   else if (!phoneOk(d.rPhone) || !phoneOk(d.sPhone)) msg = "تأكد من رقم جوالك ورقم جوال الطالب.";
   else if (d.kind === "لغة" && !d.sLang) msg = "اختر اللغة اللي يبي الطالب يدرسها.";
-  else if (d.kind === "لغة" && !d.sInst) msg = "اكتب اسم المعهد المطلوب.";
   else if (d.kind === "جامعة" && !d.sDegree) msg = "اختر المرحلة الدراسية.";
   else if (d.kind === "جامعة" && !d.sMajor) msg = "اكتب التخصص المطلوب.";
-  else if (d.kind === "جامعة" && !d.sUni) msg = "اكتب اسم الجامعة المطلوبة.";
   else if (!d.sCountry) msg = "اختر الدولة.";
-  else if (!d.sReqCity) msg = d.kind === "لغة" ? "اكتب مدينة المعهد." : "اكتب مدينة الجامعة.";
   else if (!$("consent").checked) msg = "أكّد أن الطالب موافق على التواصل معه.";
   $("err").textContent = msg;
   if (msg) return;
@@ -265,7 +263,6 @@ $("another").addEventListener("click", () => {
 document.querySelectorAll("input[name=kind]").forEach(r => r.addEventListener("change", () => {
   const lang = document.querySelector("input[name=kind]:checked").value === "لغة";
   $("langBox").hidden = !lang; $("uniBox").hidden = lang;
-  $("reqCityLbl").textContent = lang ? "مدينة المعهد" : "مدينة الجامعة";
   $("err").textContent = "";
 }));
 
