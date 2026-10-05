@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>رشّح طالبًا واكسب ١٠٠٠ ريال</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2F0; --surface:#FFFFFF; --ink:#13242B; --muted:#5A6B70;
+  --teal:#1C6474; --teal-ink:#FFFFFF; --palm:#4F8F63; --gold:#B8912A;
+  --line:#D5DEDB; --field:#F7FAF9; --err:#B3412E;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1A1E; --surface:#16252B; --ink:#E6EEEC; --muted:#9AAEB2;
+    --teal:#3E9AAE; --teal-ink:#0B1518; --palm:#7DBB8F; --gold:#D9B55A;
+    --line:#2A3C42; --field:#1B2D33; --err:#E2775F;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1A1E; --surface:#16252B; --ink:#E6EEEC; --muted:#9AAEB2;
+  --teal:#3E9AAE; --teal-ink:#0B1518; --palm:#7DBB8F; --gold:#D9B55A;
+  --line:#2A3C42; --field:#1B2D33; --err:#E2775F;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Readex Pro","Segoe UI",Tahoma,"Noto Sans Arabic",sans-serif;
+  font-size:16px;line-height:1.7}
+.wrap{max-width:560px;margin:0 auto;padding:28px 18px 48px}
+h1{font-size:1.6rem;line-height:1.35;font-weight:700;margin:0 0 8px}
+.lead{color:var(--muted);margin:0 0 24px}
+
+/* the voucher: the one memorable element */
+.voucher{position:relative;display:flex;align-items:stretch;
+  background:var(--teal);color:var(--teal-ink);border-radius:14px;
+  margin-bottom:28px;overflow:hidden}
+.voucher .amt{padding:20px 22px;flex:1}
+.voucher .amt b{display:block;font-size:2.6rem;font-weight:700;line-height:1.1;letter-spacing:-.5px}
+.voucher .amt span{opacity:.85;font-size:.95rem}
+.voucher .stub{width:112px;border-inline-start:2px dashed rgba(255,255,255,.45);
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  font-size:.82rem;padding:10px;line-height:1.5;opacity:.92}
+.voucher::before,.voucher::after{content:"";position:absolute;width:18px;height:18px;
+  border-radius:50%;background:var(--bg);inset-inline-end:103px}
+.voucher::before{top:-9px}.voucher::after{bottom:-9px}
+
+.steps{list-style:none;padding:0;margin:0 0 28px;display:grid;gap:10px}
+.steps li{display:flex;gap:12px;align-items:flex-start}
+.steps i{font-style:normal;flex:none;width:28px;height:28px;border-radius:50%;
+  border:1.5px solid var(--palm);color:var(--palm);display:grid;place-items:center;
+  font-size:.85rem;font-weight:600}
+
+form,.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+fieldset{border:0;padding:0;margin:0 0 18px}
+legend{font-weight:600;font-size:1.05rem;margin-bottom:10px;padding:0}
+label{display:block;font-size:.92rem;margin:12px 0 5px}
+label small{color:var(--muted)}
+input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--field);
+  border:1px solid var(--line);border-radius:9px;padding:11px 12px}
+input[type=tel]{direction:ltr;text-align:right}
+textarea{min-height:76px;resize:vertical}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{
+  outline:2px solid var(--teal);outline-offset:2px}
+.seg{display:flex;gap:8px}
+.seg label{flex:1;margin:0;display:flex;align-items:center;justify-content:center;gap:8px;
+  border:1px solid var(--line);border-radius:9px;padding:10px;background:var(--field);cursor:pointer}
+.seg label:has(input:checked){border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal);font-weight:600}
+.seg input{width:auto;margin:0}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:.9rem;margin:6px 0 18px}
+.check input{width:auto;margin-top:6px}
+.err{color:var(--err);font-size:.85rem;min-height:1.2em;margin-top:4px}
+button{font:inherit;cursor:pointer;border:0;border-radius:10px}
+.primary{width:100%;background:var(--teal);color:var(--teal-ink);padding:14px;font-weight:600;font-size:1.05rem}
+.note{color:var(--muted);font-size:.85rem;margin:12px 0 0;text-align:center}
+.done{display:none;text-align:center;padding:10px 0}
+.done h2{margin:6px 0;font-size:1.25rem}
+.done p{color:var(--muted);margin:0 0 14px}
+.ghost{background:transparent;border:1px solid var(--line);color:var(--ink);padding:10px 16px}
+
+/* owner tracker */
+.panel{margin-top:32px;display:none}
+.panel h2{font-size:1.1rem;margin:0 0 4px}
+.panel p.sub{color:var(--muted);font-size:.88rem;margin:0 0 14px}
+.row{border-top:1px solid var(--line);padding:12px 0;display:grid;gap:4px}
+.row .top{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.row .who{font-weight:600}
+.row .meta{color:var(--muted);font-size:.85rem}
+.row select{width:auto;padding:6px 8px;font-size:.85rem}
+.pill{font-size:.78rem;padding:2px 9px;border-radius:20px;border:1px solid var(--gold);color:var(--gold)}
+.empty{color:var(--muted);font-size:.9rem;padding:8px 0}
+@media (prefers-reduced-motion:no-preference){.done{animation:pop .35s ease-out}}
+@keyframes pop{from{transform:scale(.97);opacity:0}to{transform:none;opacity:1}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1>رشّح طالبًا، واكسب مكافأة عن كل تسجيل</h1>
+  <p class="lead">أنت ترشّح لنا الطالب، ونحن نتولى إجراءات التسجيل والقبول كاملة.</p>
+
+  <div class="voucher" aria-label="المكافأة ١٠٠٠ ريال عن كل طالب">
+    <div class="amt"><b>١٠٠٠ ريال</b><span>عن كل طالب يسجّل عن طريقك</span></div>
+    <div class="stub">تُصرف بعد بدء الدراسة فعليًا</div>
+  </div>
+
+  <ol class="steps">
+    <li><i>١</i><span>تعبّي النموذج ببياناتك وبيانات الطالب.</span></li>
+    <li><i>٢</i><span>نتواصل مع الطالب ونكمل معه التسجيل والقبول.</span></li>
+    <li><i>٣</i><span>بعد ما يدفع رسوم الدراسة ويبدأ الدراسة، نحوّل لك المكافأة.</span></li>
+  </ol>
+
+  <form id="f" novalidate>
+    <div id="fields">
+      <fieldset>
+        <legend>بياناتك</legend>
+        <label for="rName">الاسم الكامل</label>
+        <input id="rName" required autocomplete="name">
+        <label for="rPhone">رقم الجوال</label>
+        <input id="rPhone" type="tel" required placeholder="05xxxxxxxx" autocomplete="tel" inputmode="tel">
+        <label for="rEmail">البريد الإلكتروني <small>(اختياري)</small></label>
+        <input id="rEmail" type="email" autocomplete="email">
+      </fieldset>
+      <fieldset>
+        <legend>بيانات الطالب</legend>
+        <label for="sName">اسم الطالب</label>
+        <input id="sName" required>
+        <label for="sPhone">جوال الطالب</label>
+        <input id="sPhone" type="tel" required placeholder="05xxxxxxxx" inputmode="tel">
+        <label>نوع القبول المطلوب</label>
+        <div class="seg" role="radiogroup">
+          <label><input type="radio" name="kind" value="لغة" checked> معهد لغة</label>
+          <label><input type="radio" name="kind" value="جامعة"> جامعة</label>
+        </div>
+        <div id="langBox">
+          <label for="sLang">اللغة اللي يبي يدرسها</label>
+          <select id="sLang">
+            <option value="">اختر اللغة</option>
+            <option>الإنجليزية</option>
+            <option>الفرنسية</option>
+            <option>الألمانية</option>
+            <option>الإسبانية</option>
+            <option>الصينية</option>
+            <option>أخرى</option>
+          </select>
+          <label for="sInst">المعهد المطلوب</label>
+          <input id="sInst" placeholder="اسم المعهد">
+        </div>
+        <div id="uniBox" hidden>
+          <label for="sDegree">المرحلة</label>
+          <select id="sDegree">
+            <option value="">اختر المرحلة</option>
+            <option>تأسيسي</option>
+            <option>بكالوريوس</option>
+            <option>ماجستير</option>
+            <option>دكتوراه</option>
+          </select>
+          <label for="sMajor">التخصص</label>
+          <input id="sMajor" placeholder="مثال: إدارة أعمال">
+          <label for="sUni">الجامعة المطلوبة</label>
+          <input id="sUni" placeholder="اسم الجامعة">
+        </div>
+        <label for="sCountry">الدولة</label>
+        <select id="sCountry">
+          <option value="">اختر الدولة</option>
+          <option>أيرلندا</option>
+          <option>بريطانيا</option>
+          <option>أستراليا</option>
+          <option>جنوب أفريقيا</option>
+          <option>ماليزيا</option>
+          <option>الفلبين</option>
+        </select>
+        <label for="sReqCity" id="reqCityLbl">مدينة المعهد</label>
+        <input id="sReqCity" placeholder="مثال: دبلن">
+        <label for="sCity">مدينة سكن الطالب الحالية <small>(اختياري)</small></label>
+        <input id="sCity">
+        <label for="notes">ملاحظات <small>(اختياري)</small></label>
+        <textarea id="notes" placeholder="أفضل وقت للتواصل، المؤهل الحالي…"></textarea>
+      </fieldset>
+      <label class="check"><input type="checkbox" id="consent" required>
+        <span>أؤكد أن الطالب يعرف بهذا الترشيح وموافق إنكم تتواصلون معه.</span></label>
+      <div class="err" id="err" role="alert"></div>
+      <button class="primary" type="submit">أرسل الترشيح</button>
+      <p class="note">يفتح واتساب برسالة جاهزة فيها بيانات الترشيح، اضغط إرسال فقط.</p>
+    </div>
+    <div class="done" id="done">
+      <h2>وصلنا ترشيحك</h2>
+      <p>إذا ما انفتح واتساب تلقائيًا، اضغط الزر تحت.</p>
+      <p><a id="waAgain" class="primary" style="display:inline-block;padding:12px 20px;text-decoration:none;border-radius:10px" href="#">افتح واتساب</a></p>
+      <button class="ghost" type="button" id="another">رشّح طالبًا آخر</button>
+    </div>
+  </form>
+
+</main>
+
+<script>
+const WA = "966500493321";
+const STATUSES = ["جديد","تم التواصل","سجّل ودفع","بدأ الدراسة","صُرفت المكافأة","غير مؤهل"];
+const $ = id => document.getElementById(id);
+let db = null, canSave = false;
+
+function waLink(d){
+  const lines = [
+    "ترشيح طالب جديد",
+    "",
+    "المرشِّح: " + d.rName,
+    "جوال المرشِّح: " + d.rPhone + (d.rEmail ? "\nالبريد: " + d.rEmail : ""),
+    "",
+    "الطالب: " + d.sName,
+    "جوال الطالب: " + d.sPhone,
+    "نوع القبول: " + (d.kind === "لغة" ? "معهد لغة" : "جامعة"),
+    d.kind === "لغة" ? "اللغة: " + d.sLang : "المرحلة: " + d.sDegree,
+    d.kind === "لغة" ? "المعهد: " + d.sInst : "التخصص: " + d.sMajor,
+    d.kind === "جامعة" ? "الجامعة: " + d.sUni : "",
+    "الدولة: " + d.sCountry,
+    (d.kind === "لغة" ? "مدينة المعهد: " : "مدينة الجامعة: ") + d.sReqCity,
+    d.sCity ? "مدينة السكن: " + d.sCity : "",
+    d.notes ? "ملاحظات: " + d.notes : ""
+  ].filter((l,i,a)=> l!=="" || (a[i-1]!=="" )).join("\n");
+  return "https://wa.me/" + WA + "?text=" + encodeURIComponent(lines);
+}
+const phoneOk = v => /^[0-9+\s]{9,15}$/.test(v.replace(/[٠-٩]/g, c => "٠١٢٣٤٥٦٧٨٩".indexOf(c)));
+const norm = v => v.replace(/[٠-٩]/g, c => String("٠١٢٣٤٥٦٧٨٩".indexOf(c))).trim();
+
+$("f").addEventListener("submit", async e => {
+  e.preventDefault();
+  const d = {};
+  ["rName","rPhone","rEmail","sName","sPhone","sLang","sInst","sDegree","sMajor","sUni","sCountry","sReqCity","sCity","notes"].forEach(k => d[k] = $(k).value.trim());
+  d.kind = document.querySelector('input[name=kind]:checked').value;
+  if (d.kind === "لغة"){ d.sDegree = d.sMajor = d.sUni = ""; } else { d.sLang = d.sInst = ""; }
+  d.rPhone = norm(d.rPhone); d.sPhone = norm(d.sPhone);
+  let msg = "";
+  if (!d.rName || !d.sName) msg = "اكتب اسمك واسم الطالب.";
+  else if (!phoneOk(d.rPhone) || !phoneOk(d.sPhone)) msg = "تأكد من رقم جوالك ورقم جوال الطالب.";
+  else if (d.kind === "لغة" && !d.sLang) msg = "اختر اللغة اللي يبي الطالب يدرسها.";
+  else if (d.kind === "لغة" && !d.sInst) msg = "اكتب اسم المعهد المطلوب.";
+  else if (d.kind === "جامعة" && !d.sDegree) msg = "اختر المرحلة الدراسية.";
+  else if (d.kind === "جامعة" && !d.sMajor) msg = "اكتب التخصص المطلوب.";
+  else if (d.kind === "جامعة" && !d.sUni) msg = "اكتب اسم الجامعة المطلوبة.";
+  else if (!d.sCountry) msg = "اختر الدولة.";
+  else if (!d.sReqCity) msg = d.kind === "لغة" ? "اكتب مدينة المعهد." : "اكتب مدينة الجامعة.";
+  else if (!$("consent").checked) msg = "أكّد أن الطالب موافق على التواصل معه.";
+  $("err").textContent = msg;
+  if (msg) return;
+
+  const link = waLink(d);
+  $("waAgain").href = link;
+  window.open(link, "_blank");
+  $("fields").style.display = "none";
+  $("done").style.display = "block";
+});
+$("another").addEventListener("click", () => {
+  ["sName","sPhone","sLang","sInst","sDegree","sMajor","sUni","sCountry","sReqCity","sCity","notes"].forEach(k => $(k).value = "");
+  $("consent").checked = false;
+  $("done").style.display = "none";
+  $("fields").style.display = "block";
+  $("sName").focus();
+});
+
+document.querySelectorAll("input[name=kind]").forEach(r => r.addEventListener("change", () => {
+  const lang = document.querySelector("input[name=kind]:checked").value === "لغة";
+  $("langBox").hidden = !lang; $("uniBox").hidden = lang;
+  $("reqCityLbl").textContent = lang ? "مدينة المعهد" : "مدينة الجامعة";
+  $("err").textContent = "";
+}));
+
+function render(docs){
+  const list = $("list");
+  list.textContent = "";
+  if (!docs.length){
+    const e = document.createElement("div"); e.className = "empty";
+    e.textContent = "ما فيه ترشيحات محفوظة بعد. أي ترشيح ترسله من هذا النموذج يُحفظ هنا.";
+    list.appendChild(e); return;
+  }
+  docs.forEach(({id, data:d}) => {
+    const row = document.createElement("div"); row.className = "row";
+    const top = document.createElement("div"); top.className = "top";
+    const who = document.createElement("span"); who.className = "who"; who.textContent = d.sName + " — " + d.sPhone;
+    const sel = document.createElement("select");
+    STATUSES.forEach(s => { const o = document.createElement("option"); o.textContent = s; if (s===d.status) o.selected = true; sel.appendChild(o); });
+    sel.addEventListener("change", () => db.doc("referrals/" + id).update({status: sel.value}).catch(()=>{}));
+    top.append(who, sel);
+    const meta = document.createElement("div"); meta.className = "meta";
+    meta.textContent = "رشّحه: " + d.rName + " (" + d.rPhone + ")" + (d.kind ? " · " + (d.kind === "لغة" ? "لغة" : "جامعة") : "") +
+      [d.sLang, d.sInst, d.sDegree, d.sMajor, d.sUni, d.sCountry].filter(Boolean).map(x => " · " + x).join("") + (d.sReqCity ? " · " + d.sReqCity : "") +
+      " · " + new Date(d.createdAt).toLocaleDateString("ar-SA");
+    row.append(top, meta);
+    if (d.status === "بدأ الدراسة"){
+      const p = document.createElement("span"); p.className = "pill"; p.textContent = "مستحق ١٠٠٠ ريال";
+      row.appendChild(p);
+    }
+    list.appendChild(row);
+  });
+}
+
+
+</script>
+</body>
+</html>
